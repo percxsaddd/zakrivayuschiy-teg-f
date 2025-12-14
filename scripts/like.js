@@ -1,19 +1,24 @@
+// like.js
 const likeHeartArray = document.querySelectorAll('.like-icon');
 const likeButtonArray = document.querySelectorAll('.card__like-button');
 const iconButtonArray = document.querySelectorAll('.card__icon-button');
 
+// Обработчики для иконок сердца
 iconButtonArray.forEach((iconButton, index) => {
-  iconButton.onclick = (event) => {
+  iconButton.addEventListener('click', (event) => {
     event.preventDefault();
+    event.stopPropagation();
     toggleIsLiked(likeHeartArray[index], likeButtonArray[index]);
-  };
+  });
 });
 
+// Обработчики для кнопок Like
 likeButtonArray.forEach((button, index) => {
-  button.onclick = (event) => {
+  button.addEventListener('click', (event) => {
     event.preventDefault();
+    event.stopPropagation();
     toggleIsLiked(likeHeartArray[index], button);
-  };
+  });
 });
 
 function toggleIsLiked(heart, button) {
@@ -22,48 +27,16 @@ function toggleIsLiked(heart, button) {
 }
 
 function setButtonText(heart, button) {
-  if ([...heart.classList].includes('is-liked')) {
-    setTimeout(
-      () => (button.querySelector('.button__text').textContent = 'Unlike'),
-      500
-    );
+  const buttonText = button.querySelector('.button__text');
+  if (!buttonText) return;
+  
+  if (heart.classList.contains('is-liked')) {
+    setTimeout(() => {
+      buttonText.textContent = 'Unlike';
+    }, 500);
   } else {
-    setTimeout(
-      () => (button.querySelector('.button__text').textContent = 'Like'),
-      500
-    );
+    setTimeout(() => {
+      buttonText.textContent = 'Like';
+    }, 500);
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const saveButton = document.getElementById('save-button');
-  const modal = document.getElementById('modal');
-  const modalClose = document.getElementById('modal-close');
-  
-  if (saveButton && modal) {
-    saveButton.addEventListener('click', (event) => {
-      event.preventDefault(); 
-      modal.showModal();
-    });
-  }
-  
-  if (modalClose && modal) {
-    modalClose.addEventListener('click', () => {
-      modal.close();
-    });
-  }
-  
-  if (modal) {
-    modal.addEventListener('click', (event) => {
-      const modalDimensions = modal.getBoundingClientRect();
-      if (
-        event.clientX < modalDimensions.left ||
-        event.clientX > modalDimensions.right ||
-        event.clientY < modalDimensions.top ||
-        event.clientY > modalDimensions.bottom
-      ) {
-        modal.close();
-      }
-    });
-  }
-});
