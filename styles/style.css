@@ -1,83 +1,159 @@
-@supports (font-variation-settings: normal) {
-  .page {
-    font-family: var(--font-main, Arial, Helvetica, sans-serif);
-  }
+/* Здесь вы напишете основную часть стилей страницы.
+
+Будьте внимательны! Для корректной работы скриптов на этом сайте нужно, чтобы в HTML некоторые классы были названы особым образом:
+✦ theme-dark — класс тёмной темы
+✦ theme-light — класс светлой темы
+✦ like-icon — для svg-иконки анимированного сердца
+✦ card__like-button — для кнопки Like рядом с иконкой
+✦ card__icon-button — для кнопки, оборачивающей иконку
+✦ card__icon-button — для кнопки, оборачивающей иконку
+✦ is-liked — для обозначения состояния лайкнутой иконки в виде сердца
+✦ button__text — для обозначения текстового элемента внутри кнопки
+
+Кроме этого, не меняйте HTML переключателя тем. Его разметка также гарантирует работу своего скрипта.
+
+*/
+
+.filter-grayscale {
+  filter: grayscale(70%);
+}
+
+.filter-multiple {
+  filter: contrast(50%) hue-rotate(35deg) saturate(130%);
+}
+
+.filter-hue-rotate {
+  filter: hue-rotate(210deg);
+}
+
+.filter-saturate {
+  filter: saturate(250%);
+}
+
+.filter-invert {
+  filter: invert(100%);
+}
+
+.filter-sepia {
+  filter: sepia(90%);
+}
+
+.filter-blur {
+  filter: blur(10px);
 }
 
 .page {
   padding-block-start: 100px;
-  color: var(--color-main, rgba(0, 0, 0, 1));
-  min-inline-size: 320px;
-  min-block-size: 100dvb;
-  max-inline-size: 700px;
-  background-color: var(--color-bg, rgba(255, 255, 255, 1));
-  background-image: var(--img-bg);
+  color: var(--text-color, #000000);
+  font-family: var(--page-main-font-family, "Inter", sans-serif);
+  background-color: var(--page-background-color, #ffffff);
+  background-image: var(--page-background-image, none);
   background-size: cover;
   background-attachment: fixed;
-  margin: auto;
+  font-variation-settings: "wght" var(--page-main-font-weight, 400);
+  min-inline-size: 320px;
+  min-block-size: 100dvb;
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--font-accent, Courier, monospace);
-  background-color: var(--color-bg, rgba(255, 255, 255, 1));
-  border: 2px solid var(--color-main, rgba(0, 0, 0, 1));
+.page__header {
   margin-block-end: 100px;
 }
 
-.header__logo {
-  padding-block-start: clamp(7.5rem, 6.3462rem + 4.9231vw, 8.5rem);
-  font-size: clamp(3.0625rem, 1.9087rem + 4.9231vw, 4.0625rem);
-  font-weight: var(--font-weight-main);
-  line-height: 1;
+.modal {
+  border: 2px solid var(--text-color, #000000);
+  padding: 25px 30px;
+  color: var(--text-color, #000000);
+  font-family: var(--page-accent-font-family, "PressStart2P", fantasy);
+  line-height: 1.5;
   text-transform: uppercase;
-  margin-block-end: 20px;
+  background: var(--page-background-color, #ffffff);
+  max-inline-size: 355px;
+}
+
+.modal[open] {
+  display: grid;
+  /* Safari fix */
+  grid-template-rows: repeat(2, min-content);
+  gap: 30px;
+}
+
+.modal::backdrop {
+  opacity: 0.75;
+  background: var(--color-black, #000000);
+}
+
+.modal__content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.modal__icon {
+  flex-shrink: 0;
+  inline-size: 39px;
+  block-size: 39px;
+}
+
+.modal__button {
+  inline-size: 100%;
+}
+
+.page-title {
+  font-size: clamp(3.0625rem, 2.7104rem + 1.5023vw, 4.0625rem);
+}
+
+.header {
+  display: grid;
+  justify-items: center;
+  justify-content: center;
+  font-family: var(--page-accent-font-family, "PressStart2P", fantasy);
+  line-height: normal;
+  text-transform: uppercase;
 }
 
 .header__title {
-  font-size: clamp(0.875rem, 0.226rem + 2.7692vw, 1.4375rem);
-  font-weight: var(--font-weight-main);
-  line-height: 1;
-  text-transform: uppercase;
+  margin-block-start: clamp(7.5rem, 7.1479rem + 1.5023vw, 8.5rem);
+  margin-block-end: 20px;
+}
+
+.header__subtitle {
+  font-size: clamp(0.875rem, 0.6769rem + 0.8451vw, 1.4375rem);
 }
 
 .header__theme-menu {
-  padding-block-start: 25px;
-  padding-block-end: 25px;
+  margin-block: 25px;
 }
 
 .theme-menu__list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding-inline-start: 11px;
+  display: grid;
+  gap: 8px;
+  padding-inline-start: 20px;
 }
 
 .theme-menu__button {
   position: relative;
   border: none;
-  background-color: transparent;
   font-size: 14px;
-  line-height: 1;
   text-transform: uppercase;
+  background: transparent;
+  transition: opacity 0.3s ease;
   cursor: pointer;
+  appearance: none;
+}
+
+.theme-menu__button:not(:disabled)::after {
+  content: "";
+  display: block;
+  background: currentColor;
+  transition: transform 0.3s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+  inline-size: 100%;
+  block-size: 2px;
 }
 
 .theme-menu__button:hover {
   opacity: 0.6;
-}
-
-.theme-menu__button:disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.theme-menu__button:disabled::before {
-  content: "▶";
-  position: absolute;
-  inset-inline-start: -16px;
 }
 
 .theme-menu__button:focus {
@@ -85,161 +161,114 @@
   opacity: 0.6;
 }
 
-.theme-menu__button::after {
-  content: "";
-  display: block;
-  block-size: 2px;
-  background-color: var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.content__list {
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-bg, rgba(255, 255, 255, 1));
-  border: 2px solid var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.card__title {
-  font-variation-settings: "wght" var(--font-weight-title);
-  font-size: 18px;
-  line-height: 1.21;
-  padding: 4px 24px 4px 10px;
-  border-block-end: 2px solid var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.card__image {
-  position: relative;
-}
-
-.image-source {
-  inline-size: 100%;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  object-position: right;
-}
-
-.grayscale {
-  filter: grayscale(0.7);
-}
-
-.saturate {
-  filter: saturate(5);
-}
-
-.hue {
-  filter: hue-rotate(26deg);
-}
-
-.invert {
-  filter: invert(0.8);
-}
-
-.sepia {
-  filter: sepia(90%);
-}
-
-.blur {
-  filter: blur(8px);
-}
-
-.mult {
-  filter: hue-rotate(60deg) contrast(0.5) brightness(1.4);
-}
-
-.watermark {
-  position: absolute;
-  inset-block-start: 25px;
-  inset-inline-end: clamp(0.8125rem, 0.5475rem + 1.1278vw, 1.5625rem);
-  font-family: var(--font-accent, Courier, monospace);
-  font-size: 14px;
-  opacity: 0.5;
-  mix-blend-mode: hard-light;
-  text-shadow: -1 0 var(--color-bg, rgba(255, 255, 255, 1)),
-    0 1px var(--color-bg, rgba(255, 255, 255, 1)),
-    1px 0 var(--color-bg, rgba(255, 255, 255, 1)),
-    0 -1px var(--color-bg, rgba(255, 255, 255, 1));
-}
-
-@supports (
-  (text-stroke: 1px var(--color-bg, rgba(255, 255, 255, 1))) or
-    (-webkit-text-stroke: 1px var(--color-bg, rgba(255, 255, 255, 1)))
-) {
-  .watermark {
-    -webkit-text-stroke: 1px var(--color-bg, rgba(255, 255, 255, 1));
-    text-stroke: 1px var(--color-bg, rgba(255, 255, 255, 1));
-    text-shadow: none;
-  }
-}
-
-.card__text {
-  padding: 23px 25px 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 29px;
-  font-variation-settings: "wdth" var(--font-weight-main);
-  font-size: 18px;
-  line-height: 1.16;
-  border-block-start: 2px solid var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.card__buttons {
-  display: flex;
-  justify-content: end;
-  gap: 3px;
-  padding: 0 25px 25px;
-}
-
-.button {
-  position: relative;
-  background-color: transparent;
-  border: 2px solid var(--color-main, rgba(0, 0, 0, 1));
-  cursor: pointer;
-}
-
-.button__text {
-  font-family: var(--font-accent, Courier, monospace);
-  font-size: 14px;
-  line-height: 1.11;
-  color: var(--color-blend, rgba(255, 255, 255, 1));
-  mix-blend-mode: difference;
-}
-
-.card__like-button {
-  min-inline-size: 130px;
-}
-
-.btn-shad:focus {
-  outline: none;
-  box-shadow: 2px 2px 0 var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.button-paint::before {
-  content: "";
-  position: absolute;
-  display: block;
-  top: 0;
-  left: 0;
-  inline-size: 100%;
-  block-size: 100%;
-  background-color: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: 0.5s ease-in-out;
-}
-
-.button-paint:hover::before {
+.theme-menu__button:focus-visible::after {
   transform: scaleX(1);
 }
 
+.theme-menu__button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  pointer-events: none;
+}
+
+.theme-menu__button:disabled::before {
+  content: "▶";
+  position: absolute;
+  animation: arrow 0.5s ease-in-out infinite alternate;
+  inset-inline-start: -20px;
+  /* Safari fix */
+  inset-block-start: 0px;
+}
+
+.main {
+  display: grid;
+  justify-items: center;
+  gap: 57px;
+  padding-block-end: 105px;
+}
+
+.cards-list {
+  display: grid;
+  gap: 52px;
+}
+
+.card {
+  margin-inline: auto;
+  border: 2px solid var(--text-color, #000000);
+  background: var(--page-background-color, #ffffff);
+  max-inline-size: 696px;
+}
+
+.card__header {
+  border-block-end: 2px solid var(--text-color, #000000);
+  padding: 4px 10px;
+}
+
+.card__title {
+  font-size: 18px;
+  line-height: normal;
+  font-variation-settings: "wght" var(--headings-font-weight, 700);
+}
+
+.card__img-wrapper {
+  position: relative;
+  /* overflow - для коррекции эффектов filter blur */
+  overflow: hidden;
+}
+
+.card__img-label {
+  position: absolute;
+  z-index: 1;
+
+  opacity: 0.5;
+
+  color: var(--text-color, #000000);
+  font-family: var(--page-accent-font-family, "PressStart2P", fantasy);
+
+  font-size: 14px;
+  line-height: normal;
+
+  text-transform: uppercase;
+  text-shadow: 0 0 1px var(--page-background-color, #ffffff);
+  inset-inline-end: 13px;
+  inset-block-start: 24px;
+
+  mix-blend-mode: hard-light;
+}
+
+.card__img {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  inline-size: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.card__content {
+  display: grid;
+  gap: 27px;
+  border-block-start: 2px solid var(--text-color, #000000);
+  padding: 25px 30px 0 25px;
+  font-size: 18px;
+  line-height: calc(21 / 18);
+}
+
+.card__footer {
+  display: flex;
+  justify-content: end;
+  align-items: stretch;
+  gap: 5px;
+  padding: 25px 25px 23px 25px;
+}
+
 .card__icon-button {
+  display: grid;
   border: 2px solid transparent;
   padding: 0;
+  background: transparent;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  appearance: none;
 }
 
 .card__icon-button:focus {
@@ -247,122 +276,97 @@
 }
 
 .card__icon-button:focus-visible {
+  border-color: var(--text-color, #000000);
+}
+
+.button {
+  position: relative;
+  z-index: 1;
+  border: 2px solid var(--text-color, #000000);
+  padding: 10px 36px;
+  font-family: var(--page-accent-font-family, "PressStart2P", fantasy);
+  font-size: 14px;
+  text-transform: inherit;
+  background: var(--page-background-color, #ffffff);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+  appearance: none;
+}
+
+.button:focus {
   outline: none;
-  border: 2px solid var(--color-main, rgba(0, 0, 0, 1));
+}
+
+.button:focus-visible {
+  box-shadow: 2px 2px 0px 0px var(--text-color, #000000);
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--text-color, #000000);
+  transition: transform 0.5s ease-in-out;
+  transform: scaleX(0);
+  transform-origin: left;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.button:hover::before {
+  transform: scaleX(1);
+}
+
+.button--save {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px;
+}
+
+.button__text,
+.button__icon {
+  color: var(--button-text-color, #ffffff);
+  mix-blend-mode: difference;
+}
+
+.button__icon {
+  block-size: 22px;
+  inline-size: 22px;
 }
 
 .like-icon {
-  overflow: visible;
+  block-size: 36px;
   inline-size: 39px;
 }
 
-.main-body,
-.core {
-  fill: none;
-}
-
-.like-icon:hover .core,
-.like-icon:hover .main-body {
-  fill: var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.like-icon:active .core,
-.like-icon:active .main-body {
-  fill: var(--color-heart-mb, #ff0000);
-}
-
-.like-icon.is-liked .core,
-.like-icon.is-liked .main-body,
-.like-icon.is-liked .contour {
-  fill: var(--color-heart-mb, #ff0000);
-}
-
-.sparks {
-  opacity: 0;
-}
-
-.save {
-  padding: 52px 0 103px;
-  display: flex;
-  justify-content: center;
-}
-
-.save__button {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  background-color: var(--color-bg, rgba(255, 255, 255, 1));
-  padding: 18px 20px;
-}
-
-.popup {
-  font-family: var(--font-accent, Courier, monospace);
-  color: var(--color-main, rgba(0, 0, 0, 1));
-  text-transform: uppercase;
-  max-inline-size: 357px;
-  padding: 30px;
-  background-color: var(--color-bg, rgba(255, 255, 255, 1));
-  border: 2px solid var(--color-main, rgba(0, 0, 0, 1));
-}
-
-.popup[open] {
-  display: flex;
-  flex-direction: column;
-}
-
-.popup__content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
-.popup__text {
-  font-size: 14px;
-  line-height: 1.5;
-  flex: 1;
-}
-
-.form {
-  padding-block-start: 30px;
-}
-
-.popup__close-btn {
-  padding-block-start: 12.5px;
-  padding-block-end: 12.5px;
-  text-transform: uppercase;
-  inline-size: 100%;
-}
-
-.popup::backdrop {
-  opacity: 0.75;
-  background-color: rgba(0, 0, 0, 1);
-}
-
-.floppy {
-  color: var(--color-blend, rgba(255, 255, 255, 1));
-  mix-blend-mode: difference;
-  inline-size: 21px;
-}
-
-.floppy-dlg {
-  inline-size: 39px;
-}
-
-@media (width <=375px) {
-  .watermark {
-    inset-inline-end: 13px;
+/* 376 взято так как в фигме на 375 уже стоят определенные стили, а при использовании width <= 375px 375 все еще включает в себя стили для значений больше 375 ???? */
+@media (width < 376px) {
+  .modal {
+    padding: 28px 34px 28px 40px;
+    max-inline-size: 340px;
   }
 
-  .save__button {
+  .button--save {
     flex-direction: column;
   }
 
-  .popup {
-    padding: clamp(1.875rem, -2.4886rem + 21.8182vw, 2.625rem);
-  }
-
-  .floppy {
+  .button__icon {
+    block-size: 28px;
     inline-size: 28px;
+  }
+}
+
+@supports (
+  (-webkit-text-stroke: 1px var(--page-background-color, #ffffff)) or
+    (text-stroke: 1px var(--page-background-color, #ffffff))
+) {
+  .card__img-label {
+    text-shadow: none;
+    -webkit-text-stroke: 1px var(--page-background-color, #ffffff);
+    text-stroke: 1px var(--page-background-color, #ffffff);
   }
 }
