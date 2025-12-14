@@ -29,3 +29,36 @@ function setButtonText(heart, button) {
     );
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const saveButton = document.getElementById('save-button');
+  const modal = document.getElementById('modal');
+  const modalClose = document.getElementById('modal-close');
+  
+  if (saveButton && modal) {
+    saveButton.addEventListener('click', (event) => {
+      event.preventDefault(); 
+      modal.showModal();
+    });
+  }
+  
+  if (modalClose && modal) {
+    modalClose.addEventListener('click', () => {
+      modal.close();
+    });
+  }
+  
+  if (modal) {
+    modal.addEventListener('click', (event) => {
+      const modalDimensions = modal.getBoundingClientRect();
+      if (
+        event.clientX < modalDimensions.left ||
+        event.clientX > modalDimensions.right ||
+        event.clientY < modalDimensions.top ||
+        event.clientY > modalDimensions.bottom
+      ) {
+        modal.close();
+      }
+    });
+  }
+});
