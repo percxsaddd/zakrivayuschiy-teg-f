@@ -1,1 +1,1 @@
-https://github.com/percxsaddd/zakrivayuschiy-teg-f
+https://github.com/percxsaddd/zakrivayuschiy-teg-ad
